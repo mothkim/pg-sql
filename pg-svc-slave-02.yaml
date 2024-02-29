@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service-slave
+  namespace: pg-sql-02
+spec:
+  selector:
+    app: postgres-slave
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
