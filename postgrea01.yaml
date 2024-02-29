@@ -2,31 +2,49 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: postgres-master-pv
-  namespace: pg-sql-01
+  labels:
+    type: local   
 spec:
+  storageClassName: standard
   capacity:
     storage: 10Gi
+  local:
+    path: /nfs/home/data/database/pg-sql-01/master
+  persistentVolumeReclaimPolicy: Retain
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: standard
-  hostPath:
-    path: /nfs/home/data/database/pg-sql-01/master
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: app
+            operator: In
+            values:
+              - postgres
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: postgres-slave-pv
-  namespace: pg-sql-01
+  labels:
+    type: local   
 spec:
+  storageClassName: standard
   capacity:
     storage: 10Gi
+  local:
+    path: /nfs/home/data/database/pg-sql-01/slave
+  persistentVolumeReclaimPolicy: Retain
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: standard
-  hostPath:
-    path: /nfs/home/data/database/pg-sql-01/slave
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: app
+            operator: In
+            values:
+              - postgres
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
