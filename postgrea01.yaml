@@ -32,11 +32,13 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: postgres-storage
+        namespace: pg-sql-01
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
             storage: 10Gi
+        storageClassName: standard
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -52,23 +54,6 @@ spec:
   storageClassName: standard
   hostPath:
     path: /nfs/home/data/database/pg-sql-01/
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: postgres-slave-pv
-  namespace: pg-sql-01
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: standard
-  hostPath:
-    path: /nfs/home/data/database/pg-sql-01/
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -83,18 +68,3 @@ spec:
       storage: 10Gi
   storageClassName: standard
   volumeName: postgres-master-pv
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-slave-pvc
-  namespace: pg-sql-01
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: standard
-  volumeName: postgres-slave-pv
