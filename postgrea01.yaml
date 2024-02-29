@@ -39,7 +39,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: master
   hostPath:
-    path: /nfs/home/data/database/pg-sql-01/pv-pos-master
+    path: /nfs/home/data/database/pg-sql-01/pv-pos-slave
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
