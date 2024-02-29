@@ -61,7 +61,7 @@ metadata:
   namespace: pg-sql-01
 spec:
   serviceName: postgres-service
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
