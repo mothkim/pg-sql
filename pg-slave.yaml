@@ -35,11 +35,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: postgres-slave
   template:
     metadata:
       labels:
-        app: postgres
+        app: postgres-slave
     spec:
       containers:
         - name: postgres
