@@ -1,11 +1,11 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: postgres
   namespace: pg-sql-01
 spec:
   serviceName: postgres-service
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -29,26 +29,8 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgres-storage
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: master
-        resources:
-          requests:
-            storage: 10Gi
+  volumes:
+    - name: postgres-storage
+      persistentVolumeClaim:
+        claimName: postgres-master-pv
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres-service
-  namespace: pg-sql-01
-spec:
-  selector:
-    app: postgres
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
