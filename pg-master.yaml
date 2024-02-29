@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: master
+  storageClassName: manual
   hostPath:
     path: /nfs/home/data/database/pg-sql-01/pv-pos-master
 
@@ -17,7 +17,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: postgres-master
   namespace: pg-sql-01
 spec:
   serviceName: postgres-deploy
@@ -62,5 +62,5 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: master
+  storageClassName: manual
 

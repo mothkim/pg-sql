@@ -9,54 +9,46 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: master
+  storageClassName: manual
   hostPath:
     path: /nfs/home/data/database/pg-sql-01/pv-pos-slave
 
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: postgres-slave
-  labels:
-    app: postgres
+  namespace: pg-sql-01
 spec:
-  replicas: 2
-  serviceName: postgres-master
+  serviceName: postgres-deploy
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
-      role: slave
   template:
     metadata:
       labels:
         app: postgres
-        role: slave
     spec:
       containers:
-      - name: postgres
-        image: postgres:latest
-        env:
-        - name: POSTGRES_DB
-          value: mydatabase
-        - name: POSTGRES_USER
-          value: myuser
-        - name: POSTGRES_PASSWORD
-          value: mypassword
-        ports:
-        - containerPort: 5432
-        volumeMounts:
-        - name: postgres-data
-          mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-  - metadata:
-      name: postgres-data
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 1Gi
-
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: mydatabase02
+            - name: POSTGRES_USER
+              value: myuserpg02
+            - name: POSTGRES_PASSWORD
+              value: mypassword
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+  volumes:
+    - name: postgres-storage
+      persistentVolumeClaim:
+        claimName: postgres-slave-pvc
 
 ---
 apiVersion: v1
@@ -70,5 +62,5 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: master
+  storageClassName: manual
 
