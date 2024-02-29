@@ -1,59 +1,73 @@
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: standard
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
+  name: postgres
+spec:
+  serviceName: postgres-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: mydatabase
+            - name: POSTGRES_USER
+              value: myuser
+            - name: POSTGRES_PASSWORD
+              value: mypassword
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: postgres-master-pv
   namespace: pg-sql-01
-  labels:
-    type: local   
 spec:
-  storageClassName: standard
   capacity:
     storage: 10Gi
-  local:
-    path: /nfs/home/data/database/pg-sql-01/master
-  persistentVolumeReclaimPolicy: Retain
   accessModes:
     - ReadWriteOnce
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: app
-            operator: In
-            values:
-              - postgres
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /nfs/home/data/database/pg-sql-01/master
+
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: postgres-slave-pv
   namespace: pg-sql-01
-  labels:
-    type: local   
 spec:
-  storageClassName: standard
   capacity:
     storage: 10Gi
-  local:
-    path: /nfs/home/data/database/pg-sql-01/slave
-  persistentVolumeReclaimPolicy: Retain
   accessModes:
     - ReadWriteOnce
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: app
-            operator: In
-            values:
-              - postgres
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /nfs/home/data/database/pg-sql-01/slave
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -68,6 +82,7 @@ spec:
       storage: 10Gi
   storageClassName: standard
   volumeName: postgres-master-pv
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
