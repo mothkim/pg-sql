@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /root/hellotest/pv-pos-master
+    path: /nfs/home/data/database/pg-sql-02/pv-pos-master
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -39,7 +39,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /root/hellotest/pv-pos-slave
+    path: /nfs/home/data/database/pg-sql-02/pv-pos-slave
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -77,9 +77,9 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: mydatabase
+              value: mydatabase02
             - name: POSTGRES_USER
-              value: myuser
+              value: myuserpg02
             - name: POSTGRES_PASSWORD
               value: mypassword
           volumeMounts:
