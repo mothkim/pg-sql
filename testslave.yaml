@@ -14,58 +14,14 @@ spec:
     path: /nfs/home/data/database/pg-sql-01/pv-pos-master
 
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-master-pvc
-  namespace: pg-sql-01
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: master
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: postgres-slave-pv
-  namespace: pg-sql-01
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: master
-  hostPath:
-    path: /nfs/home/data/database/pg-sql-01/pv-pos-slave
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-slave-pvc
-  namespace: pg-sql-01
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: master
-
----
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: postgres
   namespace: pg-sql-01
 spec:
   serviceName: postgres-service
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -89,16 +45,24 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgres-storage
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: master
-        resources:
-          requests:
-            storage: 10Gi
+  volumes:
+    - name: postgres-storage
+      persistentVolumeClaim:
+        claimName: postgres-master-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-master-pvc
+  namespace: pg-sql-01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: master
 
 ---
 apiVersion: v1
