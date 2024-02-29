@@ -21,9 +21,9 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: mydatabase
+              value: mydatabase01
             - name: POSTGRES_USER
-              value: myuser
+              value: myuser01
             - name: POSTGRES_PASSWORD
               value: mypassword
           volumeMounts:
