@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
   hostPath:
-    path: /nfs/home/data/database/pg-sql-01/
+    path: /nfs/home/data/database/pg-sql-01/master
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -26,7 +26,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
   hostPath:
-    path: /nfs/home/data/database/pg-sql-01/
+    path: /nfs/home/data/database/pg-sql-01/slave
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
