@@ -1,3 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: standard
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -9,7 +16,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: manual
+  storageClassName: standard
   hostPath:
     path: /nfs/home/data/database/pg-sql-01/master
 ---
@@ -24,7 +31,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: manual
+  storageClassName: standard
   hostPath:
     path: /nfs/home/data/database/pg-sql-01/slave
 ---
@@ -39,7 +46,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: manual
+  storageClassName: standard
   volumeName: postgres-master-pv
 ---
 apiVersion: v1
@@ -53,7 +60,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: manual
+  storageClassName: standard
   volumeName: postgres-slave-pv
 ---
 apiVersion: apps/v1
@@ -93,7 +100,7 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: manual
+        storageClassName: standard
         resources:
           requests:
             storage: 10Gi
