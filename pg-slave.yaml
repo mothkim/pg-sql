@@ -14,7 +14,7 @@ spec:
     path: /nfs/home/data/database/pg-sql-01/pv-pos-slave
 
 ---
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres-slave
