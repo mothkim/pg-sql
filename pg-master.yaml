@@ -20,7 +20,7 @@ metadata:
   name: postgres
   namespace: pg-sql-01
 spec:
-  serviceName: postgres-service
+  serviceName: postgres-deploy
   replicas: 1
   selector:
     matchLabels:

@@ -60,7 +60,7 @@ metadata:
   name: postgres
   namespace: pg-sql-02
 spec:
-  serviceName: postgres
+  serviceName: postgres-statefulset
   replicas: 2
   selector:
     matchLabels:
