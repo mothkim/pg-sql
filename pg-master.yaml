@@ -14,7 +14,7 @@ spec:
     path: /nfs/home/data/database/pg-sql-01/pv-pos-master
 
 ---
-apiVersion: apps/v1
+apiVersion: v1
 kind: Deployment
 metadata:
   name: postgres-master
@@ -37,7 +37,7 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: mydatabase01
+              value: mydatabase
             - name: POSTGRES_USER
               value: myuserpg01
             - name: POSTGRES_PASSWORD
