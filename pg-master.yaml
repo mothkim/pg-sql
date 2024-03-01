@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /nfs/home/data/database/pg-sql-01/pv-pos-master
+    path: /nfs/home/data/database/pg-sql-01/master
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,9 +27,9 @@ spec:
   storageClassName: manual
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgres-deployment
+  name: postgres-StatefulSet
   namespace: pg-sql-01
 spec:
   replicas: 1
@@ -54,7 +54,7 @@ spec:
             - name: POSTGRES_PASSWORD
               value: mypassword
             - name: POSTGRESQL_PGAUDIT_LOG
-              value: READ,WRITE
+              value: 'READ,WRITE'
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
