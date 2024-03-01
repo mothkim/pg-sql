@@ -4,7 +4,7 @@ metadata:
   name: postgres-sfs
   namespace: pg-sql-01
 spec:
-  replicas: 1
+  replicas: 2
   serviceName: postgres-service
   selector:
     matchLabels:
