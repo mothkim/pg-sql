@@ -54,7 +54,7 @@ spec:
             - name: POSTGRES_PASSWORD
               value: mypassword
             - name: POSTGRESQL_PGAUDIT_LOG
-              value: 'READ,WRITE'
+              value: 'read,write'
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
