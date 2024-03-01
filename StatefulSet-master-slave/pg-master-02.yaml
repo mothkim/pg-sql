@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /nfs/home/data/database/pg-sql-02/pv-pos-master
+    path: /nfs/home/data/database/pg-sql-02/master
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,9 +27,9 @@ spec:
   storageClassName: manual
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgres-deployment
+  name: postgres-sfs
   namespace: pg-sql-02
 spec:
   replicas: 1
@@ -54,7 +54,7 @@ spec:
             - name: POSTGRES_PASSWORD
               value: mypassword
             - name: POSTGRESQL_PGAUDIT_LOG
-              value: READ,WRITE
+              value: 'read,write'
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
@@ -62,3 +62,16 @@ spec:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc-master
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: pg-sql-02
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
