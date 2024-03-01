@@ -61,7 +61,7 @@ spec:
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
-            claimName: postgres-pvc-slave
+            claimName: postgres-pvc-master
 ---
 apiVersion: v1
 kind: Service
