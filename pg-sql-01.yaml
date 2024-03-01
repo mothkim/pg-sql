@@ -15,12 +15,12 @@ spec:
         app: postgres
     spec:
       containers:
-        - name: postgres
+        - name: postgres-01
           image: postgres:latest
           ports:
             - containerPort: 5432
           volumeMounts:
-            - name: postgres-storage-01
+            - name: postgres-storage
               mountPath: /var/lib/postgresql/data
           env:
             - name: POSTGRES_DB
@@ -31,31 +31,31 @@ spec:
               value: mypassword
             - name: POSTGRESQL_PGAUDIT_LOG
               value: 'READ,WRITE'
-        - name: postgres
+        - name: postgres-02
           image: postgres:latest
           ports:
             - containerPort: 5432
           volumeMounts:
-            - name: postgres-storage-02
+            - name: postgres-storage
               mountPath: /var/lib/postgresql/data
           env:
             - name: POSTGRES_DB
               value: mydatabase
             - name: POSTGRES_USER
-              value: myuser
+              value: myuser02
             - name: POSTGRES_PASSWORD
               value: mypassword
             - name: POSTGRESQL_PGAUDIT_LOG
               value: 'READ'
       volumes:
-        - name: postgres-storage-01
+        - name: postgres-storage
           persistentVolumeClaim:
-            claimName: postgres-pvc-01
+            claimName: postgres-pvc
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv-01
+  name: postgres-pv
   namespace: pg-sql-01
 spec:
   capacity:
@@ -70,7 +70,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc-01
+  name: postgres-pvc
   namespace: pg-sql-01
 spec:
   accessModes:
