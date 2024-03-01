@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /nfs/home/data/database/pg-sql-01/
+    path: /nfs/home/data/database/pg-sql-01/master
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,7 +27,7 @@ spec:
   storageClassName: manual
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: postgres-master
   namespace: pg-sql-01
@@ -37,12 +37,10 @@ spec:
   selector:
     matchLabels:
       app: postgres
-      role: master
   template:
     metadata:
       labels:
         app: postgres
-        role: master
     spec:
       containers:
         - name: postgres
@@ -61,14 +59,10 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
-            - name: postgres-logs
-              mountPath: /var/log/postgresql
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc-master
-        - name: postgres-logs
-          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

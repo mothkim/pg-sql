@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /nfs/home/data/database/pg-sql-01/
+    path: /nfs/home/data/database/pg-sql-01/slave
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,7 +27,7 @@ spec:
   storageClassName: manual
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: postgres-slave
   namespace: pg-sql-01
@@ -37,12 +37,10 @@ spec:
   selector:
     matchLabels:
       app: postgres
-      role: slave
   template:
     metadata:
       labels:
         app: postgres
-        role: slave
     spec:
       containers:
         - name: postgres
@@ -74,7 +72,6 @@ metadata:
 spec:
   selector:
     app: postgres
-    role: slave
   ports:
     - protocol: TCP
       port: 5432
