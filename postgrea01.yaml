@@ -26,16 +26,4 @@ spec:
               value: myuser01
             - name: POSTGRES_PASSWORD
               value: mypassword
-          volumeMounts:
-            - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgres-storage
-        namespace: pg-sql-01
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 10Gi
 ---
