@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: docker.io/bitnami/postgresql-repmgr:14
+          image: docker.io/bitnami/postgresql-repmgr:16
           ports:
             - containerPort: 5432
           env:
