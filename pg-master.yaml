@@ -1,21 +1,25 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: postgres
+  name: postgres-1
   namespace: pg-sql-01
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: postgres
+      role: repmgr
+      node: pg-1
   template:
     metadata:
       labels:
         app: postgres
+        role: repmgr
+        node: pg-1
     spec:
       containers:
         - name: postgres
-          image: bitnami/postgresql-repmgr:latest
+          image: bitnami/postgresql-repmgr:14
           ports:
             - containerPort: 5432
           env:
@@ -32,23 +36,19 @@ spec:
             - name: REPMGR_PRIMARY_HOST
               value: pg-0
             - name: REPMGR_PARTNER_NODES
-              value: pg-1,pg-0
+              value: pg-0,pg-1
             - name: REPMGR_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
+              value: pg-1
             - name: REPMGR_NODE_NETWORK_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
+              value: pg-1
             - name: REPMGR_USERNAME
               value: repmgr
             - name: REPMGR_PASSWORD
               value: repmgrpassword
           volumeMounts:
-            - name: pg-data
+            - name: pg-1-data
               mountPath: /bitnami/postgresql
       volumes:
-        - name: pg-data
+        - name: pg-1-data
           persistentVolumeClaim:
             claimName: postgres-storage-pvc

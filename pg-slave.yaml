@@ -1,36 +1,54 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: postgres-slave
+  name: postgres-0
   namespace: pg-sql-01
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: postgres
+      role: repmgr
+      node: pg-0
   template:
     metadata:
       labels:
         app: postgres
+        role: repmgr
+        node: pg-0
     spec:
       containers:
         - name: postgres
-          image: postgres:16.1
+          image: bitnami/postgresql-repmgr:14
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRES_DB
-              value: mydatabase
-            - name: POSTGRES_USER
-              value: myuser
-            - name: POSTGRES_PASSWORD
-              value: mypassword
-            - name: POSTGRESQL_PGAUDIT_LOG
-              value: READ,WRITE
+            - name: POSTGRESQL_POSTGRES_PASSWORD
+              value: adminpassword
+            - name: POSTGRESQL_USERNAME
+              value: customuser
+            - name: POSTGRESQL_PASSWORD
+              value: custompassword
+            - name: POSTGRESQL_DATABASE
+              value: customdatabase
+            - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
+              value: "1"
+            - name: REPMGR_PRIMARY_HOST
+              value: pg-0
+            - name: REPMGR_PARTNER_NODES
+              value: pg-1,pg-0
+            - name: REPMGR_NODE_NAME
+              value: pg-1
+            - name: REPMGR_NODE_NETWORK_NAME
+              value: pg-1
+            - name: REPMGR_USERNAME
+              value: repmgr
+            - name: REPMGR_PASSWORD
+              value: repmgrpassword
           volumeMounts:
-            - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
+            - name: pg-1-data
+              mountPath: /bitnami/postgresql
       volumes:
-        - name: postgres-storage
+        - name: pg-1-data
           persistentVolumeClaim:
-            claimName: postgres-storage-01
+            claimName: postgres-storage-pvc
