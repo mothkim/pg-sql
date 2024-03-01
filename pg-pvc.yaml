@@ -10,7 +10,9 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
+
 ---
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -23,7 +25,9 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
+
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -38,7 +42,9 @@ spec:
   storageClassName: manual
   hostPath:
     path: /nfs/home/data/database/pg-sql-01/master
+
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
