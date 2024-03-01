@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv-slave
+  name: postgres-pv-slave-02
   namespace: pg-sql-02
 spec:
   capacity:
@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc-slave
+  name: postgres-pvc-slave-02
   namespace: pg-sql-02
 spec:
   accessModes:
@@ -61,7 +61,7 @@ spec:
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
-            claimName: postgres-pvc-slave
+            claimName: postgres-pvc-slave-02
 ---
 apiVersion: v1
 kind: Service
