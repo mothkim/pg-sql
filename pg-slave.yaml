@@ -37,13 +37,15 @@ spec:
   selector:
     matchLabels:
       app: postgres
+      role: slave
   template:
     metadata:
       labels:
         app: postgres
+        role: slave
     spec:
       containers:
-        - name: postgres-slave
+        - name: postgres
           image: postgres:latest
           ports:
             - containerPort: 5432
@@ -63,3 +65,17 @@ spec:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc-slave
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-slave
+  namespace: pg-sql-01
+spec:
+  selector:
+    app: postgres
+    role: slave
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
