@@ -35,11 +35,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-slave
+      app: postgres
   template:
     metadata:
       labels:
-        app: postgres-slave
+        app: postgres
     spec:
       containers:
         - name: postgres
@@ -70,7 +70,7 @@ metadata:
   namespace: pg-sql-01
 spec:
   selector:
-    app: postgres-slave
+    app: postgres
   ports:
     - protocol: TCP
       port: 5432
