@@ -33,7 +33,7 @@ metadata:
   namespace: pg-sql-01
 spec:
   replicas: 1
-  serviceName: postgres-service-slave
+  serviceName: postgres-service
   selector:
     matchLabels:
       app: postgres
@@ -43,7 +43,7 @@ spec:
         app: postgres
     spec:
       containers:
-        - name: postgres
+        - name: postgres-slave
           image: postgres:latest
           ports:
             - containerPort: 5432
@@ -63,16 +63,3 @@ spec:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc-slave
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres-service-slave
-  namespace: pg-sql-01
-spec:
-  selector:
-    app: postgres
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
