@@ -37,8 +37,9 @@ spec:
         resources:
           requests:
             storage: 10Gi
-          hostPath:
-            path: /nfs/home/data/database/pg-sql-01/master
+      volumeMode: Filesystem
+      hostPath:
+        path: /nfs/home/data/database/pg-sql-01/master
     - metadata:
         name: postgres-storage-02
       spec:
@@ -47,8 +48,9 @@ spec:
         resources:
           requests:
             storage: 10Gi
-          hostPath:
-            path: /nfs/home/data/database/pg-sql-01/slave
+      volumeMode: Filesystem
+      hostPath:
+        path: /nfs/home/data/database/pg-sql-01/slave
 ---
 apiVersion: v1
 kind: Service
