@@ -29,7 +29,7 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres-slave
+  name: postgres-slave-02
   namespace: pg-sql-02
 spec:
   replicas: 1
@@ -66,7 +66,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-service-slave
+  name: postgres-service-slave-02
   namespace: pg-sql-02
 spec:
   selector:
