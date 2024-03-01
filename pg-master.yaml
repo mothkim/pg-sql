@@ -12,7 +12,9 @@ spec:
   storageClassName: manual
   hostPath:
     path: /nfs/home/data/database/pg-sql-01/master
+
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -25,6 +27,7 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: manual
+
 ---
 apiVersion: apps/v1
 kind: Deployment
