@@ -32,7 +32,6 @@ metadata:
   name: postgres-master
   namespace: pg-sql-01
 spec:
-  serviceName: postgres-master
   replicas: 1
   selector:
     matchLabels:
@@ -72,7 +71,6 @@ metadata:
 spec:
   selector:
     app: postgres
-    role: master
   ports:
     - protocol: TCP
       port: 5432
