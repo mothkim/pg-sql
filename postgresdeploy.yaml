@@ -4,7 +4,7 @@ metadata:
   name: postgres-sfs
   namespace: pg-sql-01
 spec:
-  replicas: 2
+  replicas: 1
   serviceName: postgres-service
   selector:
     matchLabels:
@@ -28,27 +28,27 @@ spec:
               value: mypassword
             - name: POSTGRESQL_PGAUDIT_LOG
               value: 'read,write'
-          volumeClaimTemplates:
-            - metadata:
-                name: postgres-storage-01
-              spec:
-                accessModes: [ "ReadWriteOnce" ]
-                storageClassName: manual
-                resources:
-                  requests:
-                    storage: 10Gi
-                hostPath:
-                  path: /nfs/home/data/database/pg-sql-01/master
-            - metadata:
-                name: postgres-storage-02
-              spec:
-                accessModes: [ "ReadWriteOnce" ]
-                storageClassName: manual
-                resources:
-                  requests:
-                    storage: 10Gi
-                hostPath:
-                  path: /nfs/home/data/database/pg-sql-01/slave
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage-01
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: manual
+        resources:
+          requests:
+            storage: 10Gi
+          hostPath:
+            path: /nfs/home/data/database/pg-sql-01/master
+    - metadata:
+        name: postgres-storage-02
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: manual
+        resources:
+          requests:
+            storage: 10Gi
+          hostPath:
+            path: /nfs/home/data/database/pg-sql-01/slave
 ---
 apiVersion: v1
 kind: Service
