@@ -26,11 +26,11 @@ spec:
             - name: POSTGRESQL_POSTGRES_PASSWORD
               value: adminpassword
             - name: POSTGRESQL_USERNAME
-              value: customuser
+              value: myuser
             - name: POSTGRESQL_PASSWORD
-              value: custompassword
+              value: mypassword
             - name: POSTGRESQL_DATABASE
-              value: customdatabase
+              value: mydatabase
             - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
               value: "1"
             - name: REPMGR_PRIMARY_HOST
@@ -46,9 +46,9 @@ spec:
             - name: REPMGR_PASSWORD
               value: repmgrpassword
           volumeMounts:
-            - name: pg-1-data
+            - name: pg-0-data
               mountPath: /bitnami/postgresql
       volumes:
-        - name: pg-1-data
+        - name: pg-0-data
           persistentVolumeClaim:
             claimName: postgres-storage-pvc
