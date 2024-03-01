@@ -25,6 +25,7 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: manual
+  volumeName: postgres-pv-slave-02
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -35,15 +36,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-slave-02
+      app: postgres-02
   template:
     metadata:
       labels:
-        app: postgres-slave-02
+        app: postgres-02
     spec:
       containers:
-        - name: postgres-slave-02
-          image: postgres:latest
+        - name: postgres-02
+          image: postgres:16.1
           ports:
             - containerPort: 5432
           env:
@@ -70,7 +71,7 @@ metadata:
   namespace: pg-sql-02
 spec:
   selector:
-    app: postgres-slave-02
+    app: postgres-02
   ports:
     - protocol: TCP
       port: 5432

@@ -25,6 +25,7 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: manual
+  volumeName: postgres-pv-master-02
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -43,7 +44,7 @@ spec:
     spec:
       containers:
         - name: postgres-02
-          image: postgres:latest
+          image: postgres:16.1
           ports:
             - containerPort: 5432
           env:
@@ -66,7 +67,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-service-02
+  name: postgres-service-master-02
   namespace: pg-sql-02
 spec:
   selector:
