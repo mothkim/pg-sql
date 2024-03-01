@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv-master
+  name: postgres-pv-master-02
   namespace: pg-sql-02
 spec:
   capacity:
@@ -11,12 +11,12 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /nfs/home/data/database/pg-sql-02/master
+    path: /nfs/home/data/database/pg-sql-02/master/
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc-master
+  name: postgres-pvc-master-02
   namespace: pg-sql-02
 spec:
   accessModes:
@@ -61,7 +61,7 @@ spec:
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
-            claimName: postgres-pvc-master
+            claimName: postgres-pvc-master-02
 ---
 apiVersion: v1
 kind: Service
