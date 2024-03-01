@@ -10,8 +10,19 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
-  hostPath:
-    path: /nfs/home/data/database/pg-sql-01/pv-pos-master
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-storage-pv-02
+  namespace: pg-sql-01
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -25,5 +36,20 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: manual
-
-
+  hostPath:
+    path: /nfs/home/data/database/pg-sql-01/master
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-storage-02
+  namespace: pg-sql-01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: manual
+  hostPath:
+    path: /nfs/home/data/database/pg-sql-01/slave

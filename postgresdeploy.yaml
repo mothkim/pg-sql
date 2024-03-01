@@ -37,9 +37,6 @@ spec:
         resources:
           requests:
             storage: 10Gi
-      volumeMode: Filesystem
-      hostPath:
-        path: /nfs/home/data/database/pg-sql-01/master
     - metadata:
         name: postgres-storage-02
       spec:
@@ -48,9 +45,6 @@ spec:
         resources:
           requests:
             storage: 10Gi
-      volumeMode: Filesystem
-      hostPath:
-        path: /nfs/home/data/database/pg-sql-01/slave
 ---
 apiVersion: v1
 kind: Service
@@ -64,4 +58,3 @@ spec:
     - protocol: TCP
       port: 5432
       targetPort: 5432
----
