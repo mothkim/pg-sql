@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-storage-pv-01
+  name: postgres-storage
   namespace: pg-sql-01
 spec:
   capacity:
@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-storage-01
+  name: postgres-storage-pvc
   namespace: pg-sql-01
 spec:
   accessModes:
@@ -25,4 +25,4 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: manual
-  volumeName: postgres-storage-pv-01
+  volumeName: postgres-storage
