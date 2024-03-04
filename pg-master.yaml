@@ -34,13 +34,13 @@ spec:
             - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
               value: "1"
             - name: REPMGR_PRIMARY_HOST
-              value: pg-0
+              value: pg-0-0
             - name: REPMGR_PARTNER_NODES
-              value: pg-0,pg-1
+              value: pg-0-0,pg-1
             - name: REPMGR_NODE_NAME
-              value: pg-0
+              value: pg-0-0
             - name: REPMGR_NODE_NETWORK_NAME
-              value: pg-0
+              value: pg-0-0
             - name: REPMGR_USERNAME
               value: repmgr
             - name: REPMGR_PASSWORD
