@@ -9,13 +9,13 @@ spec:
     matchLabels:
       app: postgres
       role: repmgr
-      node: pg-1
+      node: pg-1-0
   template:
     metadata:
       labels:
         app: postgres
         role: repmgr
-        node: pg-1
+        node: pg-1-0
     spec:
       containers:
         - name: postgres
@@ -31,10 +31,20 @@ spec:
               value: mypassword
             - name: POSTGRESQL_DATABASE
               value: mydatabase
-            - name: PG_MODE
-              value: replica
-            - name: PG_PRIMARY_HOST
-              value: pg-0
+            - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
+              value: "1"
+            - name: REPMGR_PRIMARY_HOST
+              value: pg-0-0
+            - name: REPMGR_PARTNER_NODES
+              value: pg-1-0,pg-0-0
+            - name: REPMGR_NODE_NETWORK_NAME
+              value: pg-1-0
+            - name: REPMGR_USERNAME
+              value: repmgr
+            - name: REPMGR_PASSWORD
+              value: repmgrpassword
+            - name: REPMGR_STANDBY_MODE
+              value: "1"
           volumeMounts:
             - name: pg-1-data
               mountPath: /bitnami/postgresql
