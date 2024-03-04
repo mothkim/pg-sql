@@ -36,11 +36,11 @@ spec:
             - name: REPMGR_PRIMARY_HOST
               value: pg-0-0
             - name: REPMGR_PARTNER_NODES
-              value: pg-1-1,pg-0-0
+              value: pg-1-0,pg-0-0
             - name: REPMGR_NODE_NAME
-              value: pg-1-1
+              value: pg-1-0
             - name: REPMGR_NODE_NETWORK_NAME
-              value: pg-1-1
+              value: pg-1-0
             - name: REPMGR_USERNAME
               value: repmgr
             - name: REPMGR_PASSWORD
