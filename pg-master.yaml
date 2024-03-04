@@ -94,3 +94,4 @@ spec:
       storage: 10Gi
   storageClassName: manual
   volumeName: postgres-storage-master
+
