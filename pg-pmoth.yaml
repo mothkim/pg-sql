@@ -8,7 +8,7 @@ spec:
     matchLabels:
       app: postgres
   serviceName: postgres
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: postgres-init
-          image: bitnami/postgresql-repmgr:latest
+          image: postgres:16.2
           command:
           - bash
           - "-c"
@@ -31,12 +31,14 @@ spec:
             fi
       containers:
         - name: postgres
-          image: postgres:latest
+          image: postgres:16.2
           env:
             - name: POSTGRES_USER
               value: myuser
             - name: POSTGRES_PASSWORD
               value: mypassword
+            - name: POSTGRESQL_DATABASE
+              value: mydatabase
             - name: POD_IP
               valueFrom:
                 fieldRef:
@@ -65,7 +67,7 @@ spec:
             timeoutSeconds: 1
           volumeMounts:
           - name: data
-            mountPath: /bitnami/postgresql
+            mountPath: /var/lib/postgresql
       volumes:
         - name: data
           persistentVolumeClaim:
