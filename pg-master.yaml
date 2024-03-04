@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres-1
+  name: pg-0
   namespace: pg-sql-01
 spec:
   replicas: 1
@@ -9,13 +9,13 @@ spec:
     matchLabels:
       app: postgres
       role: repmgr
-      node: pg-1
+      node: pg-0
   template:
     metadata:
       labels:
         app: postgres
         role: repmgr
-        node: pg-1
+        node: pg-0
     spec:
       containers:
         - name: postgres
@@ -38,18 +38,18 @@ spec:
             - name: REPMGR_PARTNER_NODES
               value: pg-0,pg-1
             - name: REPMGR_NODE_NAME
-              value: pg-1
+              value: pg-0
             - name: REPMGR_NODE_NETWORK_NAME
-              value: pg-1
+              value: pg-0
             - name: REPMGR_USERNAME
               value: repmgr
             - name: REPMGR_PASSWORD
               value: repmgrpassword
           volumeMounts:
-            - name: pg-1-data
+            - name: pg-0-data
               mountPath: /bitnami/postgresql
       volumes:
-        - name: pg-1-data
+        - name: pg-0-data
           persistentVolumeClaim:
             claimName: postgres-storage-pvc
 ---
