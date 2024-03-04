@@ -46,7 +46,9 @@ spec:
             - name: REPMGR_PASSWORD
               value: repmgrpassword
             - name: REPMGR_USE_PGREWIND
-              value: "yes"
+              value: yes
+            - name: BITNAMI_DEBUG
+              value: true
           volumeMounts:
             - name: pg-1-data
               mountPath: /bitnami/postgresql
