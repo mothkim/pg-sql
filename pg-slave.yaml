@@ -24,8 +24,6 @@ spec:
         env:
           - name: REPMGR_PRIMARY_HOST
             value: pg-1-0
-          - name: REPMGR_PARTNER_NODES
-            value: pg-1-0,pg-0-0
           - name: REPMGR_NODE_NETWORK_NAME
             value: pg-1-0
           - name: REPMGR_USERNAME
