@@ -30,7 +30,7 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
             successThreshold: 1
-            timeoutSeconds: 5
+            timeoutSeconds: 10
           ports:
             - containerPort: 5432
           env:
@@ -45,7 +45,7 @@ spec:
             - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
               value: "1"
             - name: REPMGR_PRIMARY_HOST
-              value: "[postgres-service][pg-sql-01][pg-0-0]"
+              value: "postgres-service.pg-sql-01.pg-0-0"
             - name: REPMGR_PARTNER_NODES
               value: pg-1-0,pg-0-0
             - name: REPMGR_NODE_NETWORK_NAME
