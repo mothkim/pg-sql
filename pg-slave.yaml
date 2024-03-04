@@ -88,7 +88,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /nfs/home/data/database/pgsql01/slave
+    path: /nfs/home/data/database/pg-sql-01/slave
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
