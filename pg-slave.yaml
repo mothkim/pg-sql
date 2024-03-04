@@ -22,20 +22,16 @@ spec:
         image: bitnami/postgresql-repmgr:14
         command: ["repmgr", "standby", "register"]
         env:
-        - name: PGPASSWORD
-          value: repmgrpassword
-        - name: REPMGR_USERNAME
-          value: repmgr
-        - name: REPMGR_PASSWORD
-          value: repmgrpassword
-        - name: REPMGR_NODE_NAME
-          value: pg-1-0
-        - name: REPMGR_NODE_NETWORK_NAME
-          value: pg-1-0
-        - name: REPMGR_PRIMARY_HOST
-          value: "postgres-service.pgsql01.svc.cluster.local"
-        - name: REPMGR_PARTNER_NODES
-          value: pg-1-0,pg-0-0
+          - name: REPMGR_PRIMARY_HOST
+            value: "postgres-service.pgsql01.svc.cluster.local"
+          - name: REPMGR_PARTNER_NODES
+            value: pg-1-0,pg-0-0
+          - name: REPMGR_NODE_NETWORK_NAME
+            value: pg-1-0
+          - name: REPMGR_USERNAME
+            value: repmgr
+          - name: REPMGR_PASSWORD
+            value: repmgrpassword
       containers:
         - name: postgres
           image: bitnami/postgresql-repmgr:14
@@ -63,8 +59,6 @@ spec:
               value: mydatabase
             - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
               value: "1"
-            - name: postgresql.preStopDelayAfterPgStopSeconds
-              value: "300"
             - name: REPMGR_PRIMARY_HOST
               value: "postgres-service.pgsql01.svc.cluster.local"
             - name: REPMGR_PARTNER_NODES
@@ -75,8 +69,6 @@ spec:
               value: repmgr
             - name: REPMGR_PASSWORD
               value: repmgrpassword
-            - name: REPMGR_STANDBY_MODE
-              value: "1"
           volumeMounts:
             - name: pg-1-data
               mountPath: /bitnami/postgresql
