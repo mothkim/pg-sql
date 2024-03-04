@@ -20,18 +20,6 @@ spec:
       containers:
         - name: postgres
           image: bitnami/postgresql-repmgr:14
-          livenessProbe:
-            exec:
-              command:
-                - /bin/bash
-                - -c
-                - PGPASSWORD=mypassword psql -U "myuser" -d "mydatabase" -h 127.0.0.1 -p 5432 -c "SELECT 1"
-                - repmgr standby register
-            failureThreshold: 6
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 5
           ports:
             - containerPort: 5432
           env:
@@ -48,7 +36,7 @@ spec:
             - name: REPMGR_PRIMARY_HOST
               value: postgres-service.pg-sql-01.svc.cluster.local
             - name: REPMGR_PARTNER_NODES
-              value: pg-1-0,postgres-service.pg-sql-01.pg-0-0.svc.cluster.local
+              value: pg-1-0,pg-0-0
             - name: REPMGR_NODE_NETWORK_NAME
               value: pg-1-0
             - name: REPMGR_USERNAME
@@ -56,7 +44,7 @@ spec:
             - name: REPMGR_PASSWORD
               value: repmgrpassword
             - name: REPMGR_STANDBY_MODE
-              value: "true"
+              value: "1"
           volumeMounts:
             - name: pg-1-data
               mountPath: /bitnami/postgresql
