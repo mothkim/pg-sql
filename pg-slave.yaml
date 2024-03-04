@@ -23,17 +23,15 @@ spec:
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRES_PASSWORD
-              value: adminpassword
-            - name: PG_USER
+            - name: POSTGRES_USER
               value: myuser
-            - name: PG_PASSWORD
+            - name: POSTGRES_PASSWORD
               value: mypassword
-            - name: PG_DATABASE
+            - name: POSTGRESQL_DATABASE
               value: mydatabase
-            - name: PG_MODE
+            - name: POSTGRES_MODE
               value: replica
-            - name: PG_PRIMARY_HOST
+            - name: POSTGRES_PRIMARY_HOST
               value: pg-0-0
           volumeMounts:
             - name: pg-data-1
