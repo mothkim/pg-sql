@@ -25,11 +25,11 @@ spec:
           env:
             - name: POSTGRES_PASSWORD
               value: adminpassword
-            - name: POSTGRESQL_USERNAME
+            - name: PG_USER
               value: myuser
-            - name: POSTGRESQL_PASSWORD
+            - name: PG_PASSWORD
               value: mypassword
-            - name: POSTGRESQL_DATABASE
+            - name: PG_DATABASE
               value: mydatabase
             - name: PG_MODE
               value: primary
