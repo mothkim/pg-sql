@@ -34,19 +34,15 @@ spec:
             - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
               value: "1"
             - name: REPMGR_PRIMARY_HOST
-              value: postgres-service.pg-sql-01.svc.cluster.local
+              value: "postgres-service.pg-sql-01.svc.cluster.local,pg-0-0"
             - name: REPMGR_PARTNER_NODES
-              value: postgres-service-slave.pg-sql-01.svc.cluster.local,postgres-service.pg-sql-01.svc.cluster.local
-            - name: REPMGR_NODE_NAME
-              value: pg-1-0
+              value: pg-0-0,pg-1-0
             - name: REPMGR_NODE_NETWORK_NAME
               value: pg-1-0
             - name: REPMGR_USERNAME
               value: repmgr
             - name: REPMGR_PASSWORD
               value: repmgrpassword
-            - name: REPMGR_STANDBY_MODE
-              value: "true"
           volumeMounts:
             - name: pg-1-data
               mountPath: /bitnami/postgresql
