@@ -25,7 +25,7 @@ spec:
               command:
                 - /bin/bash
                 - -c
-                - PGPASSWORD=$POSTGRESQL_PASSWORD psql -U "myuser" -d "mydatabase" -h 127.0.0.1 -p 5432 -c "SELECT 1"
+                - PGPASSWORD=mypassword psql -U "myuser" -d "mydatabase" -h 127.0.0.1 -p 5432 -c "SELECT 1"
                 - repmgr standby register
             failureThreshold: 6
             initialDelaySeconds: 30
