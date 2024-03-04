@@ -1,8 +1,76 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pg-0
+  namespace: pgsql01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+      role: repmgr
+      node: pg-0-0
+  template:
+    metadata:
+      labels:
+        app: postgres
+        role: repmgr
+        node: pg-0-0
+    spec:
+      containers:
+        - name: postgres
+          image: bitnami/postgresql-repmgr:14
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRESQL_POSTGRES_PASSWORD
+              value: adminpassword
+            - name: POSTGRESQL_USERNAME
+              value: myuser
+            - name: POSTGRESQL_PASSWORD
+              value: mypassword
+            - name: POSTGRESQL_DATABASE
+              value: mydatabase
+            - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
+              value: "1"
+            - name: REPMGR_PRIMARY_HOST
+              value: pg-0-0
+            - name: REPMGR_PARTNER_NODES
+              value: pg-0-0,pg-1-0
+            - name: REPMGR_NODE_NAME
+              value: pg-0-0
+            - name: REPMGR_NODE_NETWORK_NAME
+              value: pg-0-0
+            - name: REPMGR_USERNAME
+              value: repmgr
+            - name: REPMGR_PASSWORD
+              value: repmgrpassword
+          volumeMounts:
+            - name: pg-data-0
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: pg-data-0
+          persistentVolumeClaim:
+            claimName: postgres-storage-pvc-master-0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: pgsql01
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv-master-02
-  namespace: pg-sql-02
+  name: postgres-storage-master
+  namespace: pgsql01
 spec:
   capacity:
     storage: 10Gi
@@ -11,13 +79,13 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: /nfs/home/data/database/pg-sql-02/master
+    path: /nfs/home/data/database/pg-sql-01/master
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc-master-02
-  namespace: pg-sql-02
+  name: postgres-storage-pvc-master-0
+  namespace: pgsql01
 spec:
   accessModes:
     - ReadWriteOnce
@@ -25,54 +93,5 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: manual
-  volumeName: postgres-pv-master-02
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: postgres-sfs-02
-  namespace: pg-sql-02
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: postgres-02
-  template:
-    metadata:
-      labels:
-        app: postgres-02
-    spec:
-      containers:
-        - name: postgres-02
-          image: postgres:16.1
-          ports:
-            - containerPort: 5432
-          env:
-            - name: POSTGRES_DB
-              value: mydatabase
-            - name: POSTGRES_USER
-              value: myuser
-            - name: POSTGRES_PASSWORD
-              value: mypassword
-            - name: POSTGRESQL_PGAUDIT_LOG
-              value: 'read,write'
-          volumeMounts:
-            - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
-      volumes:
-        - name: postgres-storage
-          persistentVolumeClaim:
-            claimName: postgres-pvc-master-02
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres-service-master-02
-  namespace: pg-sql-02
-spec:
-  selector:
-    app: postgres-02
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
+  volumeName: postgres-storage-master
+
