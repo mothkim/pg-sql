@@ -4,7 +4,7 @@ metadata:
   name: pg-0
   namespace: pg-sql-01
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: postgres
@@ -36,7 +36,7 @@ spec:
             - name: REPMGR_PRIMARY_HOST
               value: pg-0-0
             - name: REPMGR_PARTNER_NODES
-              value: pg-0-0,pg-1
+              value: pg-0-0,pg-0-1
             - name: REPMGR_NODE_NAME
               value: pg-0-0
             - name: REPMGR_NODE_NETWORK_NAME
@@ -48,10 +48,15 @@ spec:
           volumeMounts:
             - name: pg-0-data
               mountPath: /bitnami/postgresql
+            - name: pg-1-data
+              mountPath: /bitnami/postgresql
       volumes:
         - name: pg-0-data
           persistentVolumeClaim:
             claimName: postgres-storage-pvc
+        - name: pg-1-data
+          persistentVolumeClaim:
+            claimName: postgres-storage-svlave-pvc
 ---
 apiVersion: v1
 kind: Service
