@@ -35,13 +35,9 @@ spec:
             - name: REPMGR_PARTNER_NODES
               value: pg-0,pg-1
             - name: REPMGR_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
+              value: pg-0
             - name: REPMGR_NODE_NETWORK_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
+              value: pg-0
             - name: REPMGR_USERNAME
               value: repmgr
             - name: REPMGR_PASSWORD
