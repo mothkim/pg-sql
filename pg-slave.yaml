@@ -17,20 +17,20 @@ spec:
         role: repmgr
         node: pg-1
     spec:
-      livenessProbe:
-        exec:
-          command:
-            - /bin/bash
-            - -c
-            - PGPASSWORD=$POSTGRESQL_PASSWORD psql -U "postgres" -d "postgres" -h 127.0.0.1 -p 5432 -c "SELECT 1"
-          failureThreshold: 6
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 5
       containers:
         - name: postgres
           image: bitnami/postgresql-repmgr:14
+          livenessProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - PGPASSWORD=$POSTGRESQL_PASSWORD mypassword -U "myuser" -d "mydatabase" -h 127.0.0.1 -p 5432 -c "SELECT 1"
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
           ports:
             - containerPort: 5432
           env:
