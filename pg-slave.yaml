@@ -23,6 +23,8 @@ spec:
           ports:
             - containerPort: 5432
           env:
+            - name: POSTGRES_PASSWORD
+              value: adminpassword
             - name: POSTGRESQL_USERNAME
               value: myuser
             - name: POSTGRESQL_PASSWORD
@@ -32,12 +34,12 @@ spec:
             - name: PG_MODE
               value: replica
             - name: PG_PRIMARY_HOST
-              value: pg-0
+              value: pg-0-0
           volumeMounts:
-            - name: pg-1-data
+            - name: pg-data-1
               mountPath: /var/lib/postgresql
       volumes:
-        - name: pg-1-data
+        - name: pg-data-1
           persistentVolumeClaim:
             claimName: postgres-storage-pvc-slave-0
 ---
