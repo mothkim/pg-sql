@@ -8,15 +8,18 @@ spec:
   selector:
     matchLabels:
       app: postgres
-  serviceName: pg
+      role: repmgr
+      node: pg-0
   template:
     metadata:
       labels:
         app: postgres
+        role: repmgr
+        node: pg-0
     spec:
       containers:
         - name: postgres
-          image: bitnami/postgresql-repmgr:latest
+          image: bitnami/postgresql-repmgr:14
           ports:
             - containerPort: 5432
           env:
