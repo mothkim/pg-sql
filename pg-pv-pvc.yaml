@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-storage-pvc
+  name: postgres-storage-pvc-0
   namespace: pg-sql-01
 spec:
   accessModes:
@@ -45,7 +45,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-storage-slave-pvc
+  name: postgres-storage-pvc-1
   namespace: pg-sql-01
 spec:
   accessModes:

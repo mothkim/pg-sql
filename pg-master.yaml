@@ -1,22 +1,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: pg-0
+  name: pg
   namespace: pg-sql-01
 spec:
   replicas: 2
   selector:
     matchLabels:
       app: postgres
-      role: repmgr
-      node: pg-0
-  serviceName: pg-0
+  serviceName: pg
   template:
     metadata:
       labels:
         app: postgres
-        role: repmgr
-        node: pg-0
     spec:
       containers:
         - name: postgres
@@ -35,81 +31,28 @@ spec:
             - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
               value: "1"
             - name: REPMGR_PRIMARY_HOST
-              value: pg-0-0
+              value: pg-0
             - name: REPMGR_PARTNER_NODES
-              value: pg-0-0,pg-0-1
+              value: pg-0,pg-1
             - name: REPMGR_NODE_NAME
-              value: pg-0-0
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: REPMGR_NODE_NETWORK_NAME
-              value: pg-0-0
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
             - name: REPMGR_USERNAME
               value: repmgr
             - name: REPMGR_PASSWORD
               value: repmgrpassword
           volumeMounts:
-            - name: pg-data
-              mountPath: /bitnami/postgresql
+            - name: pg-data-0
+              mountPath: /bitnami/postgresql/data
       volumes:
-        - name: pg-data
+        - name: pg-data-0
           persistentVolumeClaim:
-            claimName: postgres-storage-pvc
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: pg-1
-  namespace: pg-sql-01
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: postgres
-      role: repmgr
-      node: pg-1
-  serviceName: pg-1
-  template:
-    metadata:
-      labels:
-        app: postgres
-        role: repmgr
-        node: pg-1
-    spec:
-      containers:
-        - name: postgres
-          image: bitnami/postgresql-repmgr:latest
-          ports:
-            - containerPort: 5432
-          env:
-            - name: POSTGRESQL_POSTGRES_PASSWORD
-              value: adminpassword
-            - name: POSTGRESQL_USERNAME
-              value: myuser
-            - name: POSTGRESQL_PASSWORD
-              value: mypassword
-            - name: POSTGRESQL_DATABASE
-              value: mydatabase
-            - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
-              value: "1"
-            - name: REPMGR_PRIMARY_HOST
-              value: pg-0-0
-            - name: REPMGR_PARTNER_NODES
-              value: pg-0-0,pg-0-1
-            - name: REPMGR_NODE_NAME
-              value: pg-0-1
-            - name: REPMGR_NODE_NETWORK_NAME
-              value: pg-0-1
-            - name: REPMGR_USERNAME
-              value: repmgr
-            - name: REPMGR_PASSWORD
-              value: repmgrpassword
-          volumeMounts:
-            - name: pg-data
-              mountPath: /bitnami/postgresql
-      volumes:
-        - name: pg-data
-          persistentVolumeClaim:
-            claimName: postgres-storage-slave-pvc
-
+            claimName: postgres-storage-pvc-0
 ---
 apiVersion: v1
 kind: Service
