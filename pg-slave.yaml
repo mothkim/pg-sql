@@ -56,6 +56,8 @@ spec:
               value: repmgr
             - name: REPMGR_PASSWORD
               value: repmgrpassword
+            - name: REPMGR_STANDBY_MODE
+              value: "1"
           volumeMounts:
             - name: pg-1-data
               mountPath: /bitnami/postgresql
