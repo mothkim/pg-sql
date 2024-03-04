@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: bitnami/postgresql:14
+          image: postgres:16.2
           ports:
             - containerPort: 5432
           env:
@@ -35,7 +35,7 @@ spec:
               value: primary
           volumeMounts:
             - name: pg-data-0
-              mountPath: /bitnami/postgresql
+              mountPath: /var/lib/postgresql
       volumes:
         - name: pg-data-0
           persistentVolumeClaim:
