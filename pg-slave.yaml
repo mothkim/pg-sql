@@ -17,19 +17,6 @@ spec:
         role: repmgr
         node: pg-1
     spec:
-      initContainers:
-      - name: standby-registration
-        image: bitnami/postgresql-repmgr:14
-        command: ["repmgr", "standby", "register"]
-        env:
-          - name: REPMGR_PRIMARY_HOST
-            value: pg-1-0
-          - name: REPMGR_NODE_NETWORK_NAME
-            value: pg-1-0
-          - name: REPMGR_USERNAME
-            value: repmgr
-          - name: REPMGR_PASSWORD
-            value: repmgrpassword
       containers:
         - name: postgres
           image: bitnami/postgresql-repmgr:14
@@ -67,6 +54,8 @@ spec:
               value: repmgr
             - name: REPMGR_PASSWORD
               value: repmgrpassword
+            - name: REPMGR_STANDBY_MODE
+              value: true
           volumeMounts:
             - name: pg-1-data
               mountPath: /bitnami/postgresql
