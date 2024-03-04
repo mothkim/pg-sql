@@ -9,13 +9,13 @@ spec:
     matchLabels:
       app: postgres
       role: repmgr
-      node: pg-0
+      node: pg-0-0
   template:
     metadata:
       labels:
         app: postgres
         role: repmgr
-        node: pg-0
+        node: pg-0-0
     spec:
       containers:
         - name: postgres

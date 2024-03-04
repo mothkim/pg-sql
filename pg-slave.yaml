@@ -9,13 +9,13 @@ spec:
     matchLabels:
       app: postgres
       role: repmgr
-      node: pg-1
+      node: pg-1-0
   template:
     metadata:
       labels:
         app: postgres
         role: repmgr
-        node: pg-1
+        node: pg-1-0
     spec:
       containers:
         - name: postgres
@@ -34,7 +34,7 @@ spec:
             - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
               value: "1"
             - name: REPMGR_PRIMARY_HOST
-              value: postgres-service.pg-sql-01.svc.cluster.local
+              value: pg-0-0
             - name: REPMGR_PARTNER_NODES
               value: pg-1-0,pg-0-0
             - name: REPMGR_NODE_NETWORK_NAME
