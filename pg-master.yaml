@@ -36,7 +36,7 @@ spec:
             - name: REPMGR_PRIMARY_HOST
               value: postgres-service.pg-sql-01.svc.cluster.local
             - name: REPMGR_PARTNER_NODES
-              value: postgres-service.pg-sql-01.pg-0-0,postgres-service-slave.pg-sql-01.pg-1-0
+              value: pg-0-0,pg-1-0
             - name: REPMGR_NODE_NAME
               value: pg-0-0
             - name: REPMGR_NODE_NETWORK_NAME
