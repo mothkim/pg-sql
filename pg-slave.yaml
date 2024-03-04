@@ -23,8 +23,6 @@ spec:
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRESQL_POSTGRES_PASSWORD
-              value: adminpassword
             - name: POSTGRESQL_USERNAME
               value: myuser
             - name: POSTGRESQL_PASSWORD
