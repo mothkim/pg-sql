@@ -44,7 +44,7 @@ spec:
               value: repmgrpassword
           volumeMounts:
             - name: pg-data-0
-              mountPath: /bitnami/postgresql/data
+              mountPath: /bitnami/postgresql
       volumes:
         - name: pg-data-0
           persistentVolumeClaim:
