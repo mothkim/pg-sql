@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgres-0
   namespace: pg-sql-01
@@ -51,4 +51,17 @@ spec:
       volumes:
         - name: pg-0-data
           persistentVolumeClaim:
-            claimName: postgres-storage-pvc
+            claimName: postgres-storage-slave-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service-slave
+  namespace: pg-sql-01
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
