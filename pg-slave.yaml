@@ -23,7 +23,7 @@ spec:
         command: ["repmgr", "standby", "register"]
         env:
           - name: REPMGR_PRIMARY_HOST
-            value: "postgres-service.pgsql01.svc.cluster.local"
+            value: pg-1-0
           - name: REPMGR_PARTNER_NODES
             value: pg-1-0,pg-0-0
           - name: REPMGR_NODE_NETWORK_NAME
