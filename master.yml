@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-master
+  namespace: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-master
+  template:
+    metadata:
+      labels:
+        app: postgres-master
+    spec:
+      containers:
+        - name: postgres-master
+          image: bitnami/postgresql:16
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          env:
+          - name: POSTGRESQL_PGAUDIT_LOG
+            value: "READ,WRITE"
+          - name: POSTGRESQL_LOG_HOSTNAME
+            value: "true"
+          - name: POSTGRESQL_REPLICATION_MODE
+            value: "master"
+          - name: POSTGRESQL_REPLICATION_USER
+            value: "repl_user"
+          - name: POSTGRESQL_REPLICATION_PASSWORD
+            value: "repl_user"
+          - name: POSTGRESQL_USERNAME
+            value: "postgres"
+          - name: POSTGRESQL_PASSWORD
+            value: "postgres"
+          - name: POSTGRESQL_DATABASE
+            value: "development_database"
+          - name: ALLOW_EMPTY_PASSWORD
+            value: "yes"
+          volumeMounts:
+            - mountPath: /bitnami/postgresql
+              name: postgresdata
+      volumes:
+        - name: postgresdata
+          persistentVolumeClaim:
+            claimName: postgres-master-pvc
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-volume
+  namespace: postgres
+  labels:
+    type: local
+    app: postgres-master
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/home/data/database/pg-sql-01/master
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-master-pvc
+  namespace: postgres
+  labels:
+    app: postgres-master
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-master-svc
+  namespace: postgres
+  labels:
+    app: postgres-master
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+  selector:
+    app: postgres-master

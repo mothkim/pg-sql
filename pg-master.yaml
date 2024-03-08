@@ -9,31 +9,45 @@ spec:
     matchLabels:
       app: postgres
       role: repmgr
-      node: pg-0
+      node: pg-0-0
   template:
     metadata:
       labels:
         app: postgres
         role: repmgr
-        node: pg-0
+        node: pg-0-0
     spec:
       containers:
         - name: postgres
-          image: postgres:16.2
+          image: bitnami/postgresql-repmgr:14
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRES_USER
+            - name: POSTGRESQL_POSTGRES_PASSWORD
+              value: adminpassword
+            - name: POSTGRESQL_USERNAME
               value: myuser
-            - name: POSTGRES_PASSWORD
+            - name: POSTGRESQL_PASSWORD
               value: mypassword
             - name: POSTGRESQL_DATABASE
               value: mydatabase
-            - name: POSTGRES_MODE
-              value: primary
+            - name: POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS
+              value: "1"
+            - name: REPMGR_PRIMARY_HOST
+              value: pg-0-0
+            - name: REPMGR_PARTNER_NODES
+              value: pg-0-0,pg-1-0
+            - name: REPMGR_NODE_NAME
+              value: pg-0
+            - name: REPMGR_NODE_NETWORK_NAME
+              value: pg-0-0
+            - name: REPMGR_USERNAME
+              value: repmgr
+            - name: REPMGR_PASSWORD
+              value: repmgrpassword
           volumeMounts:
             - name: pg-data-0
-              mountPath: /var/lib/postgresql
+              mountPath: /bitnami/postgresql
       volumes:
         - name: pg-data-0
           persistentVolumeClaim:

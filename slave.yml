@@ -1,0 +1,93 @@
+# Slave
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-slave
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-slave
+  template:
+    metadata:
+      labels:
+        app: postgres-slave
+    spec:
+      containers:
+        - name: postgres-slave
+          image: bitnami/postgresql:16
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          env:
+          - name: POSTGRESQL_PASSWORD
+            value: "postgres"
+          - name: POSTGRESQL_MASTER_HOST
+            value: "postgres-master-svc.database"
+          - name: POSTGRESQL_PGAUDIT_LOG
+            value: "READ"
+          - name: POSTGRESQL_LOG_HOSTNAME
+            value: "true"
+          - name: POSTGRESQL_REPLICATION_MODE
+            value: "slave"
+          - name: POSTGRESQL_REPLICATION_USER
+            value: "repl_user"
+          - name: POSTGRESQL_REPLICATION_PASSWORD
+            value: "repl_user"
+          - name: POSTGRESQL_MASTER_PORT_NUMBER
+            value: "5432"
+          - name: ALLOW_EMPTY_PASSWORD
+            value: "yes"
+          volumeMounts:
+            - mountPath: /bitnami/postgresql
+              name: postgresdata
+      volumes:
+        - name: postgresdata
+          persistentVolumeClaim:
+            claimName: postgres-slave-pvc
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-slave-pv
+  namespace: postgres
+  labels:
+    type: local
+    app: postgres-slave
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /nfs/home/data/database/pg-sql-01/slave
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-slave-pvc
+  namespace: postgres
+  labels:
+    app: postgres-slave
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-slave-svc
+  namespace: postgres
+  labels:
+    app: postgres-slave
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+  selector:
+    app: postgres-slave
