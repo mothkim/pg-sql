@@ -17,6 +17,9 @@ spec:
         - name: postgres-master
           image: bitnami/postgresql:16
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "2Gi"
           ports:
             - containerPort: 5432
           env:
